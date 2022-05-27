@@ -1,0 +1,72 @@
+Add the following as another project to the blockchain course 
+
+People seeking to buy Land often have to go through rigorous surveying and researching to
+find a plot that suits their needs and matches their budget. Even after a person finds the ideal land, 
+they might find themselves swamped with paperwork and documentation to get the land transferred and registered under their name.
+
+Personal data required to successfully execute the paperwork of a land deal is often very sensitive 
+and it is highly crucial that the data be properly safeguarded to prevent it from falling into the wrong hands. 
+
+This Blockchain based Land Registries System comprises the following two entities: The Registrar (i.e., The Admin) and The User.
+
+IMPORTS
+OpenZeppelin's ERC721 contract
+
+PROPERTIES
+struct Registrar;
+Registrar[] registrars; 
+mapping(address => Registrar);
+
+struct User { string username; string password, address[] bookmarkedPlots } ;
+mapping(address => User);
+
+contract Land extends ERC721 { uint size; string[] pictures; uint startingXCoordinate; 
+uint startingYCoordinate; uint endingXCoordinate; uint endingYCoordinate; address currentOwner; bool availableForSale;
+address landAddress; string pendingStatus; uint costOfLandInWei  };
+
+Land[] landsAvailableForSale;
+Land[] lands; 
+
+// struct, contract
+
+mapping(address personRequestingToBuy => Land landBeingRequested) requestToBuy;
+requestToBuy[] allTheRequestsToBuy;
+
+FUNCTIONS
+createUserProfile(username, password) * add user to users mapping/list
+logInUser(username, password) * check that the username exists * check the password is correct for that username 
+viewDetailsAboutLand(address landAddress) * return all public properties of the land: currentOwner, pendingStatus 
+bookmarkPlot(address plotAddress)
+viewMyBookmarks() * return all the bookmarked plots' details of the msg.sender 
+requestToBuyLand(address landToBuy) * sent in msg.value * check that the user sent enough wei  
+
+REGISTRAR FUNCTIONS 
+modifier so that only the registrar can access these functions, not users 
+modifier onlyRegistrar() {
+	require (msg.sender === registrar);
+  _;
+}
+
+function addLand(Land newLand) onlyRegistrar view public {} ;
+function viewLand(address landToView) onlyRegistrar view public {}; * return details about the land 
+function updateLandDetails(address landToView, Land updatedLandDetails) onlyRegistrar view public {};
+function manuallyApproveRequestToBuy(requestToBuy) * return true if registrar approves the transfer, false to cancel the sale 
+* check that there's enough money * check that the requester is not a scammer * check that the requester isn't going above the limit of buys per day
+* check that the requested isn't banned * verify the seller 
+
+Once the User has created their profile and logged in to the system, they can look for land available for sale 
+and view relevant details about the current owner and the pending status.
+
+Users can bookmark plots that they like and later view them under the bookmarks section of the application. 
+
+The Registrar can add, view, or update details about the land along with information pertaining to the ownership.
+They can also verify the data with blocks created to find signs of tampering.
+
+In this system, the registrar is the only person who can add new land entry/ transferring/selling etc. 
+
+with all user, land and valuation information. 
+
+Since we are saving the data with blockchain nobody can temper any information and if they did the registrar will know it. 
+
+The User app has the ability to get details about a land or a request and can bookmark it. 
+Well User cannot see history about the land but only the current owner details.
