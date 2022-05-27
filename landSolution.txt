@@ -1,5 +1,4 @@
-Add the following as another project to the blockchain course 
-
+ 
 People seeking to buy Land often have to go through rigorous surveying and researching to
 find a plot that suits their needs and matches their budget. Even after a person finds the ideal land, 
 they might find themselves swamped with paperwork and documentation to get the land transferred and registered under their name.
